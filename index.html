@@ -70,9 +70,11 @@ let currentCaptchaImg = null;
 
 function generateRandomText(length=5){
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let text='';
-  for(let i=0;i<length;i++) text+=chars.charAt(Math.floor(Math.random()*chars.length));
-  return text;
+  let result = [];
+  for (let i = 0; i < length; i++) {
+    result.push(chars.charAt(Math.floor(Math.random() * chars.length)));
+  }
+  return result.join(" ");
 }
 
 async function fetchCaptcha(text){
@@ -116,6 +118,7 @@ function drawFeedbackOverlay(isCorrect){
 async function loadNewCaptcha(){
   currentCaptcha = generateRandomText();
   await drawCaptchaFromAPI(currentCaptcha);
+  currentCaptcha = currentCaptcha.replaceAll(" ", "");
   captchaInput.value='';
   updateStats();
   captchaInput.focus();
